@@ -9,17 +9,14 @@ fun main(args: Array<String>) {
     val pattern = args[1]
     val inputLine = System.`in`.bufferedReader().readText()
 
-     if (matchPattern(inputLine, pattern)) {
-         exitProcess(0)
-     } else {
-         exitProcess(1)
-     }
+    if (matchPattern(inputLine, pattern)) println("success").also { exitProcess(0) }
+    else println("failure").also { exitProcess(1) }
 }
 
-fun matchPattern(inputLine: String, pattern: String): Boolean {
-    return if (pattern.length == 1) {
-        pattern in inputLine
-    } else {
-        throw RuntimeException("Unhandled pattern: $pattern")
+fun matchPattern(inputLine: String, pattern: String): Boolean =
+    when {
+        pattern == "\\d" -> inputLine.any { it.isDigit() }
+        pattern.length == 1 -> pattern in inputLine
+        else -> throw RuntimeException("Unhandled pattern: $pattern")
     }
-}
+
