@@ -15,8 +15,11 @@ fun main(args: Array<String>) {
 
 fun matchPattern(inputLine: String, pattern: String): Boolean =
     when {
-        pattern.startsWith("[") && pattern.endsWith("]") ->
-            pattern.substring(1, pattern.length - 1).any { it in inputLine }
+        pattern.startsWith("[") && pattern.endsWith("]") -> {
+            val characterGroup = pattern.substring(1, pattern.length - 1)
+            if (characterGroup.first() == '^') inputLine.any { it !in pattern }
+            else inputLine.any { it in pattern }
+        }
         pattern == "\\d" -> inputLine.any { it.isDigit() }
         pattern == "\\w" -> inputLine.any { it.isAlphaNumeric() }
         pattern.length == 1 -> pattern in inputLine
